@@ -83,7 +83,7 @@ export const fetchSites = async (): Promise<Site[]> => {
     }
 
     // Map Cloud Objects to Site Interface
-    return results.map((obj: any) => ({
+    const cloudSites: Site[] = results.map((obj: any) => ({
       objectId: obj.id,
       n: obj.get('name'),
       u: obj.get('url'),
@@ -92,6 +92,39 @@ export const fetchSites = async (): Promise<Site[]> => {
       rating: obj.get('rating') || 0,
       pinned: obj.get('pinned') || false
     }));
+
+    // --- Sync Logic: Add sites from INITIAL_SITES that are missing in Cloud ---
+    const cloudUrls = new Set(cloudSites.map(s => s.u));
+    const sitesToAdd = INITIAL_SITES.filter(s => !cloudUrls.has(s.u));
+
+    if (sitesToAdd.length > 0) {
+      console.log(`Syncing ${sitesToAdd.length} new sites from constants...`);
+      const objectsToSave = sitesToAdd.map(site => {
+        const obj = new AV.Object('Sites');
+        obj.set('name', site.n);
+        obj.set('url', site.u);
+        obj.set('category', site.c);
+        obj.set('icon', JSON.stringify(site.t));
+        obj.set('rating', site.rating || 0);
+        obj.set('pinned', site.pinned || false);
+        return obj;
+      });
+
+      try {
+        await AV.Object.saveAll(objectsToSave);
+        const savedSites = objectsToSave.map((obj: any, index: number) => ({
+          ...sitesToAdd[index],
+          objectId: obj.id
+        }));
+        return [...cloudSites, ...savedSites];
+      } catch (e) {
+        console.error("Sync failed", e);
+        // Fallback: return combined list even if save failed
+        return [...cloudSites, ...sitesToAdd];
+      }
+    }
+
+    return cloudSites;
 
   } catch (error: any) {
     // Error 101: Class not found (database empty/new)

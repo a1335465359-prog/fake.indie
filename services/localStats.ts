@@ -137,6 +137,15 @@ export const getFavorites = (allSites: Site[]): { pinned: Site[], frequent: Site
   const otherSites = allSites.filter(s => !pinnedIds.includes(s.objectId || s.u));
   
   const sortedOthers = otherSites.sort((a, b) => {
+    // Star Logic: Sink 1 & 2 stars to bottom
+    const rA = a.rating || 0;
+    const rB = b.rating || 0;
+    const isBadA = rA > 0 && rA <= 2;
+    const isBadB = rB > 0 && rB <= 2;
+    
+    if (isBadA !== isBadB) return isBadA ? 1 : -1;
+
+    // Score Logic
     const scoreA = computeScore(clickMap[a.objectId || a.u]);
     const scoreB = computeScore(clickMap[b.objectId || b.u]);
     return scoreB - scoreA;

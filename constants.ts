@@ -1,3 +1,4 @@
+
 import { Site, Theme } from './types';
 
 export const THEMES: Theme[] = [
@@ -471,5 +472,63 @@ export const INITIAL_SITES: Site[] = [
     {n:"Big Save", u:"https://www.bigsave.com.tw", t:["家居"], c:"linen"},
     {n:"Minne", u:"https://minne.com", t:["手作"], c:"linen"},
     {n:"Mattecoco", u:"https://www.mattecoco.com", t:["小麦色"], c:"linen"},
-    {n:"Hippie Chic", u:"https://hippiechicshop.com", t:["波西"], c:"linen"}
+    {n:"Hippie Chic", u:"https://hippiechicshop.com", t:["波西"], c:"linen"},
+
+    // --- NEWLY ADDED SITES ---
+    
+    // Inspiration / Style
+    {n:"Farm Rio", u:"https://farmrio.eu/collections/dresses?page=4", t:["灵感站","度假"], c:"french"},
+    {n:"Faithfull", u:"https://faithfullthebrand.com", t:["灵感站","度假"], c:"french"},
+    {n:"Jaded London Ins", u:"https://jadedldn.com/en-us/collections/womens-all", t:["灵感站","英国潮牌"], c:"young"},
+    {n:"Boteh", u:"https://us.boteh.com.au/collections/dresses", t:["灵感站","度假"], c:"french"},
+    {n:"Runaway Label", u:"https://runawaythelabel.com/au/collections/shop", t:["灵感站","网红"], c:"young"},
+    {n:"One Loved Babe", u:"https://www.onelovedbabe.com", t:["灵感站","甜美"], c:"young"},
+    {n:"Nuuly", u:"https://www.nuuly.com/rent/browse/tops", t:["灵感站","租赁"], c:"young"},
+    {n:"Shona Joy", u:"https://shonajoy.com", t:["灵感站","礼服"], c:"gown"},
+    {n:"AW Bridal", u:"https://www.awbridal.com/bridesmaid-dresses", t:["灵感站","婚纱"], c:"gown"},
+    {n:"Spell", u:"https://usa.spell.co/collections/new-arrivals", t:["灵感站","波西"], c:"french"},
+    {n:"Daughters India", u:"https://us.daughtersofindia.net/collections/new-1", t:["灵感站","波西"], c:"linen"},
+    {n:"Nina Luxo", u:"https://www.ninaluxo.com.br", t:["灵感站","度假"], c:"young"},
+    {n:"Gyp Schoo", u:"https://gypschoo.com.ar/remeras-musculosas", t:["灵感站","度假"], c:"young"},
+
+    // AI Visual
+    {n:"Nomad Boutique", u:"https://www.nomadboutique.com/collections/dresses", t:["AI视觉","牛仔"], c:"denim"},
+    {n:"Nelly", u:"https://nelly.com/fr", t:["AI视觉","综合"], c:"euro"},
+    {n:"By Pias", u:"https://www.bypias.com/en/collections/dresses", t:["AI视觉","棉麻"], c:"linen"},
+    {n:"Mooyius", u:"https://mooyius.com/de", t:["AI视觉","通勤"], c:"elegant"},
+    {n:"Codestunts", u:"https://www.codestunts.com", t:["AI视觉","波西"], c:"french"},
+    {n:"Modesees", u:"https://modesees.com", t:["AI视觉"], c:"elegant"},
+    {n:"Linen Vibes", u:"https://linenvibes.com/collections", t:["AI视觉","庄园"], c:"linen"},
+    {n:"Futario", u:"https://futario.com/de", t:["AI视觉","西部"], c:"denim"},
+    {n:"Diaknitwear", u:"https://www.diaknitwear.com", t:["AI视觉","维京"], c:"euro"},
+
+    // US Market
+    {n:"Three Bird Nest", u:"https://www.threebirdnest.com/collections/clothing", t:["美式乡村"], c:"linen"},
+    {n:"Dear Lover", u:"https://www.dear-lover.com", t:["美式乡村","批发"], c:"fast"},
+    {n:"Faith & Co", u:"https://faithandcoboutique.com", t:["美式乡村"], c:"young"},
+    {n:"Teal Turtle", u:"https://www.thetealturtleboutique.com", t:["美式乡村","大码"], c:"curve"},
+    {n:"Big Bratt", u:"https://www.bigbrattboutique.com", t:["西部牛仔"], c:"denim"},
+    {n:"Western Soul", u:"https://westernsoul.com", t:["西部牛仔"], c:"denim"},
+    {n:"Rowdy Western", u:"https://rowdywesternhippie.com", t:["西部牛仔"], c:"denim"},
+    {n:"Double D Ranch", u:"https://doubledranch.com", t:["西部牛仔"], c:"denim"},
+
+    // Australia
+    {n:"White Fox Global", u:"https://whitefoxboutique.com", t:["澳洲","网红"], c:"young"},
+    {n:"Alemais", u:"https://alemais.com", t:["澳洲","度假"], c:"french"},
+    {n:"Boheme Junction", u:"https://bohemejunction.com", t:["澳洲","波西"], c:"curve"},
+    {n:"Camilla", u:"https://camilla.com", t:["澳洲","高端"], c:"gown"},
+    {n:"Proud Poppy", u:"https://proudpoppyclothing.com.au", t:["澳洲","大码"], c:"curve"},
+
+    // Japan / Korea
+    {n:"Ccomeng", u:"https://m.ccomeng.com/product/list.html", t:["韩国","日常"], c:"young"},
+    {n:"Anyonemore", u:"https://anyonemore.kr", t:["韩国","甜美"], c:"young"},
+    {n:"Sixty Percent", u:"https://www.sixty-percent.com", t:["韩国","快反"], c:"sport"},
+    {n:"Netsea", u:"https://www.netsea.jp/search", t:["日本","批发"], c:"fast"},
+    {n:"Arts Wardrobe", u:"https://www.artswardrobe.com", t:["日本","设计"], c:"young"},
+
+    // Muslim / Modest
+    {n:"East Essence", u:"https://eastessence.com", t:["穆斯林","传统"], c:"elegant"},
+    {n:"Modest Fashion", u:"https://modestfashionfrance.com", t:["穆斯林","法式"], c:"french"},
+    {n:"Rabel Collection", u:"https://www.rabelcollection.com", t:["穆斯林","现代"], c:"elegant"},
+    {n:"Boksha", u:"https://www.boksha.com/en", t:["穆斯林","设计"], c:"gown"}
 ];

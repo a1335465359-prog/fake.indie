@@ -1,5 +1,8 @@
 import { Site } from '../types';
 import { INITIAL_SITES } from '../constants';
+import { EXTRA_SITES } from '../extraSites';
+
+const ALL_INITIAL_SITES: Site[] = [...INITIAL_SITES, ...EXTRA_SITES];
 
 // LeanCloud SDK is loaded via CDN in index.html, creating a global 'AV' object.
 // We declare it here to satisfy TypeScript.
@@ -45,7 +48,7 @@ const seedInitialData = async () => {
   if (!AV) return;
 
   console.log("Seeding initial data to Cloud...");
-  const objects = INITIAL_SITES.map(site => {
+  const objects = ALL_INITIAL_SITES.map(site => {
     const obj = new AV.Object('Sites');
     obj.set('name', site.n);
     obj.set('url', site.u);
@@ -68,7 +71,7 @@ const seedInitialData = async () => {
 
 export const fetchSites = async (): Promise<Site[]> => {
   const AV = getAV();
-  if (!AV) return INITIAL_SITES;
+  if (!AV) return ALL_INITIAL_SITES;
 
   try {
     const query = new AV.Query('Sites');
@@ -79,7 +82,7 @@ export const fetchSites = async (): Promise<Site[]> => {
     if (results.length === 0) {
       console.log("No sites found in cloud. Seeding...");
       await seedInitialData();
-      return INITIAL_SITES;
+      return ALL_INITIAL_SITES;
     }
 
     // Map Cloud Objects to Site Interface
@@ -93,9 +96,9 @@ export const fetchSites = async (): Promise<Site[]> => {
       pinned: obj.get('pinned') || false
     }));
 
-    // --- Sync Logic: Add sites from INITIAL_SITES that are missing in Cloud ---
+    // Sync sites from the bundled lists that are missing in Cloud.
     const cloudUrls = new Set(cloudSites.map(s => s.u));
-    const sitesToAdd = INITIAL_SITES.filter(s => !cloudUrls.has(s.u));
+    const sitesToAdd = ALL_INITIAL_SITES.filter(s => !cloudUrls.has(s.u));
 
     if (sitesToAdd.length > 0) {
       console.log(`Syncing ${sitesToAdd.length} new sites from constants...`);
@@ -131,10 +134,10 @@ export const fetchSites = async (): Promise<Site[]> => {
     if (error.code === 101) {
       console.log("Class 'Sites' not found. Creating and seeding...");
       await seedInitialData();
-      return INITIAL_SITES;
+      return ALL_INITIAL_SITES;
     }
     console.error("Fetch sites failed:", error);
-    return INITIAL_SITES;
+    return ALL_INITIAL_SITES;
   }
 };
 

@@ -16,6 +16,24 @@ const APP_ID = "6P7pXdSfaRbIqcHY7j7A4YD4-gzGzoHsz";
 const APP_KEY = "2IP6aCKKVp3Hk3NBt1zQp90C";
 const SERVER_URL = "https://6p7pxdsf.lc-cn-n1-shared.com";
 
+const parseTags = (raw: unknown): string[] => {
+  try {
+    const parsed = JSON.parse(typeof raw === 'string' ? raw : '[]');
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+};
+
+// The first imported batch used the broad “有人模” rule and included empty studio
+// backdrops. The replacement batch carries “实景优先”; remove only the old managed
+// batch before syncing the stricter list.
+const isLegacyImportedBatch = (obj: any): boolean => {
+  const tags = parseTags(obj.get('icon'));
+  const isManagedRegion = ['美国', '英国', '德国', '东欧'].some(region => tags.includes(region));
+  return isManagedRegion && tags.includes('有人模') && !tags.includes('实景优先');
+};
+
 // --- Internal Helper: Lazy Initialize LeanCloud ---
 const getAV = () => {
   const AV = window.AV;
@@ -85,13 +103,27 @@ export const fetchSites = async (): Promise<Site[]> => {
       return ALL_INITIAL_SITES;
     }
 
+    // Hide the previous loose batch immediately, then remove it from LeanCloud.
+    const legacyObjects = results.filter(isLegacyImportedBatch);
+    const legacyIds = new Set(legacyObjects.map((obj: any) => obj.id));
+    const activeResults = results.filter((obj: any) => !legacyIds.has(obj.id));
+
+    if (legacyObjects.length > 0) {
+      console.log(`Removing ${legacyObjects.length} legacy studio-background sites...`);
+      try {
+        await Promise.all(legacyObjects.map((obj: any) => obj.destroy()));
+      } catch (e) {
+        console.error("Legacy batch cleanup failed", e);
+      }
+    }
+
     // Map Cloud Objects to Site Interface
-    const cloudSites: Site[] = results.map((obj: any) => ({
+    const cloudSites: Site[] = activeResults.map((obj: any) => ({
       objectId: obj.id,
       n: obj.get('name'),
       u: obj.get('url'),
       c: obj.get('category'),
-      t: JSON.parse(obj.get('icon') || '[]'),
+      t: parseTags(obj.get('icon')),
       rating: obj.get('rating') || 0,
       pinned: obj.get('pinned') || false
     }));
